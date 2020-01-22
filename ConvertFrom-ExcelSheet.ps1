@@ -1,4 +1,4 @@
-#
+<#
 -ConvertFrom-ExcelSheet-
 .SYNOPSIS
 Converts a single Excel sheet into powershell custom objects
@@ -18,7 +18,7 @@ Switch incase the sheet data has no headers. If else the first row will be made 
 .NOTES
 Do not use this function on large sheets as it searches every field in excel seperatly.
 Creating a function that saves the data to csv and imports that will be a lot faster
-#
+#>
 function ConvertFrom-ExcelSheet {
     [CmdletBinding()]
     Param(
@@ -62,13 +62,13 @@ function ConvertFrom-ExcelSheet {
                 $Value = $WS.Cells.Item($r, $c).text
                 if (-not $Header) {$Header = Column$c}
                 if (-not $Value) {$Value = $null}
-                $EntryObj  Add-Member -NotePropertyName $Header -NotePropertyValue $Value
+                $EntryObj | Add-Member -NotePropertyName $Header -NotePropertyValue $Value
             }
-            $Output.Add($EntryObj)  Out-Null
+            $Output.Add($EntryObj) | Out-Null
         }
         $WB.Close()
         $EX.Quit()
-        [System.Runtime.Interopservices.Marshal]ReleaseComObject($EX)  Out-Null
+        [System.Runtime.Interopservices.Marshal]::ReleaseComObject($EX) | Out-Null
     }
     Return $Output
 }
